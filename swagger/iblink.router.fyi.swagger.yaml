@@ -1,0 +1,307 @@
+swagger: '2.0'
+info:
+  title: FYI API
+  description: IBLink's FYI API
+  version: '1.0.0'
+host: webdev100:63004
+schemes:
+  - http
+basePath: /ci/portal
+produces:
+  - application/json
+paths:
+  /fyi/unreadnumber:
+    get:
+      summary: Get unread number of fyis
+      tags:
+        - FYI
+      responses:
+        200:
+          description: An object
+          schema:
+            type: object
+            properties:
+              BN:
+                type: integer
+                description: unread number
+  /fyi/settings:
+    get:
+      summary: Get a list of subscriptions
+      tags:
+        - FYI
+      description: |
+        return the current choices of subscriptions, we can toggle the option
+      responses:
+        200:
+          description: An array
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                A:
+                  type: integer
+                  description: optional, if A doesn't exist, it means user can't toggle this option. 0-off, 1-on.
+                FC:
+                  type: string
+                  description: fyi code
+                H:
+                  type: integer
+                  description: disclaimer read, 1 = yes, = 0 no.
+                FD:
+                  type: string
+                  description: detailed description
+                FN:
+                  type: string
+                  description: title
+  /fyi/settings/{typecode}:
+    post:
+      summary: enable/disable certain subscription
+      tags:
+        - FYI
+      parameters:
+        - name: typecode
+          in: path
+          required: true
+          type: string
+          description: fyi code
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+      responses:
+        200:
+          description: 200 means successful
+          schema:
+            type: object
+  /fyi/disclaimer/{typecode}:
+    get:
+      summary: get disclaimer for a certain kind of fyi
+      tags:
+        - FYI
+      parameters:
+        - name: typecode
+          in: path
+          required: true
+          type: string
+          description: fyi code, for example --M8, EA
+      responses:
+        200:
+          description: receives the disclaimer message
+          schema:
+            type: object
+            properties:
+              DT:
+                type: string
+                description: disclaimer message
+              FC:
+                type: string
+                description: fyi code
+    put:
+      summary: mark disclaimer read
+      tags:
+        - FYI
+      parameters:
+        - name: typecode
+          in: path
+          required: true
+          type: string
+          description: fyi code, for example --M8, EA
+      responses:
+        200:
+          description: 200 means successful
+          schema:
+            type: object
+            properties:
+              T:
+                type: integer
+              V:
+                type: integer
+  /fyi/deliveryoptions:
+    get:
+      summary: Get delivery options
+      tags:
+        - FYI
+      description: |
+        options for sending fyis to email and other devices
+      responses:
+        200:
+          description: An object
+          schema:
+            type: object
+            properties:
+              M:
+                type: integer
+                description: Email option is enabled or not 0-off, 1-on.
+              E:
+                type: array
+                items:
+                  type: object
+                  description: device
+                  properties:
+                    NM:
+                      type: string
+                      description: device name
+                    I:
+                      type: string
+                      description: device id
+                    UI:
+                      type: string
+                      description: unique device id
+                    A:
+                      type: string
+                      description: device is enabled or not 0-true, 1-false.
+  /fyi/deliveryoptions/email:
+    put:
+      summary: enable/disable email option
+      tags:
+        - FYI
+      parameters:
+        - name: enabled
+          in: query
+          required: true
+          type: string
+          description: true/false
+      responses:
+        200:
+          description: 200 means successful
+          schema:
+            type: object
+            properties:
+              T:
+                type: integer
+              V:
+                type: integer
+  /fyi/deliveryoptions/device:
+    post:
+      summary: enable/disable device option
+      tags:
+        - FYI
+      parameters:
+        - in: body
+          name: body
+          description: device info
+          required: true
+          schema:
+            type: object
+            properties:
+              devicename:
+                type: string
+              deviceId:
+                type: string
+              uiName:
+                type: string
+              enabled:
+                type: boolean
+      responses:
+        200:
+          description: 200 means successful
+          schema:
+            type: object
+            properties:
+              T:
+                type: integer
+              V:
+                type: integer
+  /fyi/deliveryoptions/{deviceId}:
+    delete:
+      summary: delete a device
+      tags:
+        - FYI
+      parameters:
+        - name: deviceId
+          in: path
+          type: string
+          required: true
+          description: device ID
+      responses:
+        200:
+          description: 200 means successful
+          schema:
+            type: object
+  /fyi/notifications:
+    get:
+      summary: Get a list of notifications
+      tags:
+        - FYI
+      parameters:
+        - name: exclude
+          in: query
+          type: string
+          description: if set, don't set include
+        - name: include
+          in: query
+          type: string
+          description: if set, don't set exclude
+        - name: max
+          in: query
+          required: true
+          type: string
+          description: max number of fyis in response
+      responses:
+       200:
+          description: An array
+          schema:
+            $ref: '#/definitions/notifications'
+  /fyi/notifications/more:
+    get:
+      summary: Get more notifications based on a certain one
+      tags:
+        - FYI
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: string
+          description: id of last notification in the list
+      responses:
+       200:
+          description: An array
+          schema:
+            $ref: '#/definitions/notifications'
+  /fyi/notifications/{notificationId}:
+    put:
+      summary: Get a list of notifications
+      tags:
+        - FYI
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          type: string
+          description: mark a notification read
+      responses:
+       200:
+          description: when 200 receives, it means successful
+          schema:
+            type: object
+
+definitions:
+  notifications:
+    type: array
+    items:
+      type: object
+      description: notification
+      properties:
+        D:
+          type: string
+          description: notification date
+        ID:
+          type: string
+          description: unique way to reference this notification
+        FC:
+          type: string
+          description: FYI code, we can use it to find whether the disclaimer is accepted or not in settings
+        MD:
+          type: string
+          description: content of notification
+        MS:
+          type: string
+          description: title of notification
+        R:
+          type: string
+          description: 0-unread, 1-read

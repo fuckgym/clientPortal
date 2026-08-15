@@ -1,0 +1,14 @@
+JarIndex-Version: 1.0
+
+ibgroup.security.auth.client.lib.jar
+BUILD-INF
+ibgroup
+ibgroup/security
+ibgroup/security/auth
+ibgroup/security/auth/client
+ibgroup/security/auth/client/lib
+ibgroup/securtity
+ibgroup/securtity/auth
+ibgroup/securtity/auth/client
+ibgroup/securtity/auth/client/lib
+

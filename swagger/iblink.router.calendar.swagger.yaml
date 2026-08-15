@@ -1,0 +1,156 @@
+swagger: '2.0'
+info:
+  title: Event Calendar API
+  description: IBLink's Event Calendar API
+  version: '1.0.0'
+host: webdev100:63004
+schemes:
+  - http
+basePath: /ci/portal
+produces:
+  - application/json
+paths:
+  /calendar/metadata:
+    get:
+      summary: Get metadata for Event calendar
+      description: |
+        We must send this before we request events
+      tags:
+        - Calendar
+      responses:
+        200:
+          description: An object
+          schema:
+            type: object
+            properties:
+              event_types:
+                type: array
+                items:
+                  type: object
+                  description: event
+              filters:
+                type: array
+                items:
+                  type: object
+                  description: filter
+  /calendar/events:
+    post:
+      summary: Get Events
+      description: |
+        returns events based on dates and filters
+      tags:
+        - Calendar
+      parameters:
+        - in: body
+          name: body
+          description: calendar request for events
+          required: true
+          schema:
+            $ref: '#/definitions/calendar_request'
+      responses:
+       200:
+          description: An object
+          schema:
+            type: object
+            properties:
+              day_counts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                    count:
+                      type: object
+                      properties:
+                        other:
+                          type: integer
+              has_more:
+                type: boolean
+              events:
+                $ref: '#/definitions/events'
+
+definitions:
+  calendar_request:
+    type: object
+    properties:
+      date:
+        type: object
+        properties:
+            start:
+              type: string
+              description: start date of a period. for example 20180808-0400
+            end:
+              type: string
+              description: end date of a period. for example 20180808-0400
+      filters:
+        type: object
+        properties:
+          recently_held:
+            type: string
+            description: value can be 'true' or 'false'.
+          corporate_earnings:
+            type: string
+            description: value can be 'true' or 'false'.
+          DivExDates:
+            type: string
+            description: value can be 'true' or 'false'.
+          ipo:
+            type: string
+            description: value can be 'true' or 'false'.
+          splits:
+            type: string
+            description: value can be 'true' or 'false'.
+          corporate_events:
+            type: string
+            description: value can be 'true' or 'false'.
+          economic_events:
+            type: string
+            description: value can be 'true' or 'false'.
+          option_show_monthly:
+            type: string
+            description: value can be 'true' or 'false'.
+          option_show_weekly:
+            type: string
+            description: value can be 'true' or 'false'.
+          country:
+            type: string
+            description: default is 'All'.
+          limit:
+            type: string
+            description: default is '250'.
+          limit_region:
+            type: string
+            description: default is '50'.
+  events:
+    type: array
+    description: events
+    items:
+      type: object
+      properties:
+        index_date_type:
+          type: string
+        event_type:
+          type: string
+        data:
+          type: object
+          description: will be different for different event types
+        conids:
+          type: array
+          items:
+            type: string
+            description: conid in string
+        index_date:
+          type: string
+          description: for exmple 20180817T040000+0000
+        source:
+          type: string
+          description: for example RSE
+        event_key:
+          type: string
+          description: for example 11662135
+        tooltips:
+          type: object
+        status:
+          type: string
+

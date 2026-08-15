@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+  <info organisation="ibgroup.security" module="ibgroup.security.auth.client.lib" revision="20210528111732" status="integration" publication="20210528111732">
+    <description>
+        Auth Client Lib
+    </description>
+  </info>
+
+  <configurations>
+    <conf name="api" description="Dependencies needed by clients of this module at compile time (and at runtime)  that clients are unlikely to be aware of because they would not normally need to  explicitly import any objects from these dependencies. Modules with no downstream  dependencies should never define a dependency using this configuration."/>
+		<conf name="compile" extends="api" description="Configuration needed to compile this module." visibility="private"/>
+		<conf name="compileOnly" description="Configuration for identifying dependencies that are needed to compile but that are NOT needed at runtime, either because they affect source compilation only (e.g., source-time annotations) or because they are provided by the deplyoment platform (e.g., a Java EE Application server). These dependencies are NOT subject to transitive dependency resolution." visibility="private"/>
+		<conf name="embedded" description="Dependencies needed by the client at compile time (and at runtime) that will be directly incorporated into the final artifact. These dependencies are NOT subject to transitive dependency resolution." visibility="private"/>
+		<conf name="runtime" extends="compile" description="Dependencies needed by clients of this module at runtime that are not  needed to compile the artifact."/>
+		<conf name="test" extends="runtime" description="Configuration needed to test this module." visibility="private"/>
+		<conf name="master" description="Configuration provided for referring to this module&apos;s artifact by itself  without any of its dependencies. This configuration is useful when building assemblies such  as .war and .ear files."/>
+		<conf name="ear" description="Configuration for identifying dependencies that need to be packaged in a JEE EAR file"/>
+		<conf name="war" description="Configuration for identifying dependencies that need to be packaged in a JEE WAR file        in the WEB-INF/lib folder"/>
+		<conf name="sar" description="Configuration for identifying dependencies that need to be packaged in a JBoss SAR file"/>
+  </configurations>
+
+  <publications>
+    <artifact type="jar"/>
+  </publications>
+
+  <dependencies defaultconfmapping="api->api(default);    compile->api(default);    compileOnly->master(default);    embedded->master(default);    runtime->runtime(default);    test->runtime(default);    ear->master(default);    war->master(default)" confmappingoverride="true">
+
+    <dependency conf="compile" org="org.slf4j" name="slf4j-api" rev="1.7.+"/>
+    <dependency conf="runtime" org="ch.qos.logback" name="logback-classic" rev="1.2.+"/>
+    <dependency conf="runtime" org="ch.qos.logback" name="logback-core" rev="1.2.+"/>
+    <dependency conf="test" org="org.junit" name="junit" rev="4.+"/>
+
+  </dependencies>
+
+</ivy-module>

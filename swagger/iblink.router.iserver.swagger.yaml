@@ -1,0 +1,37 @@
+swagger: '2.0'
+info:
+  title: IServer API
+  description: IBLink's IServer API
+  version: '1.0.0'
+host: webdev100:63004
+schemes:
+  - http
+basePath: /v1/api
+produces:
+  - application/json
+securityDefinitions:
+  cookieAuth:
+    type: apiKey
+    name: portal
+    in: header
+security:
+  - cookieAuth: []
+paths:
+  /iserver/accounts:
+    get:
+      summary: Brokerage Accounts
+      description: |
+        Returns a list of brokerage accounts accessible to the user
+      tags:
+        - IServer
+      responses:
+        200:
+          description: An array of accounts
+          schema:
+            type: object
+            properties:
+              accounts:
+                type: array
+                items:
+                  type: string
+                  description: Unique account id

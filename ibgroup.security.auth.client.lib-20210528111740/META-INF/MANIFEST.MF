@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.15
+Created-By: 1.8.0_202-b08 (Oracle Corporation)
+Built-By: sliechti
+Javac-Source: 1.8
+Javac-Target: 1.8
+User-Dir: /home/dev183/sliechti/thgit/security/auth.client.lib
+When-Built: 2021-05-28T11:17:31-0400
+Git-Origin-Url: gitsrv100:/security/auth.client.lib
+Git-Commit: c45183b7b05a8566c1c2fe7fbe6c6a6ef9799d2e
+
+Name: common
+Implementation-Version: ibgroup.security.auth.client.lib-2021052811173
+ 1
+
